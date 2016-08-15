@@ -1,0 +1,66 @@
+package app.exam;
+
+import game.app.exam09.Monster;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+public class Monster {
+	//필드
+	private GameView gameView;
+	private static Bitmap[] bitmaps;
+	public Rect rect;
+	private int index;
+	private Timer timer;
+	private boolean dying;
+	//생성자
+	public Monster(GameView gameView, Rect rect) {
+		this.gameView = gameView;
+		//비트맵 얻기
+		Resources resources = gameView.getResources();
+		if(bitmaps == null) {
+			bitmaps = new Bitmap[1]; 
+			bitmaps[0] = BitmapFactory.decodeResource(resources, R.drawable.monster_01_01);
+		}
+		//초기 드로잉 영역 설정
+		this.rect = rect;
+	}
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmaps[0], 
+				rect.left+gameView.background.rect.left, 
+				rect.top+gameView.background.rect.top, 
+				null);
+	}
+	
+	//총알을 맞을  때 실행
+	public void die() {
+		if(dying == false) {
+			//효과 애니메이션 시작
+			dying = true;
+			timer.schedule(timerTask, 0, 300);
+		}
+	}
+	
+	//효과 애니메이션
+	private TimerTask timerTask = new TimerTask() {
+		@Override
+		public void run() {
+			//효과 비트맵 변경
+			index++;
+			if(index == bitmaps.length-1) {
+				//애니메이션 중지
+				timer.cancel();
+				timer.purge();
+				//몬스터 제거
+				gameView.monsterPool.monsters.remove(Monster.this);
+			}
+		}
+	};
+}

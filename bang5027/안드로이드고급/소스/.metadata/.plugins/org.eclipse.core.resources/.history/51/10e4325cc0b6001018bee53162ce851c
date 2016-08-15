@@ -1,0 +1,25 @@
+package app.exam;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.view.View;
+
+public class GameView extends View {
+	private Background background;
+	private Actor actor;
+	
+	public GameView(Context context) {
+		super(context);
+		background = new Background(this);
+		actor = new Actor(this);
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		background.draw(canvas);
+		actor.draw(canvas);
+	}
+}

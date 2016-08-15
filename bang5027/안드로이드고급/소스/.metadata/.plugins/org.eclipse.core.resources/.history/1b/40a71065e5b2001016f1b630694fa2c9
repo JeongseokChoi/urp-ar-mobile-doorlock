@@ -1,0 +1,64 @@
+package app.exam;
+
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+	private TextView txtInfo;
+	private LocationManager locationManager;	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		txtInfo = (TextView) findViewById(R.id.txtInfo);
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		locationManager.requestLocationUpdates(
+				LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		locationManager.removeUpdates(locationListener);
+	}
+	
+	private LocationListener locationListener = new LocationListener() {
+		public void onLocationChanged(Location location) {			
+			txtInfo.setText("[현재 위치 정보]\n");
+			txtInfo.append("위도: " + location.getLatitude() + " °\n");
+			txtInfo.append("경도: " + location.getLongitude() + " °\n");			
+			txtInfo.append("고도: " + location.getAltitude() + " m\n");
+			txtInfo.append("방향: " + location.getBearing() + " °\n");
+			txtInfo.append("속도: " + location.getSpeed() + " m/s\n");			
+			Location destination = new Location(LocationManager.GPS_PROVIDER);
+			destination.setLatitude(37.751853);
+			destination.setLongitude(128.876058);
+			txtInfo.append("강릉시청까지 남은 거리: " + 
+location.distanceTo(destination) + " m\n\n");
+			
+			float[] results = new float[2];
+			Location.distanceBetween(37.566547, 126.978189, 37.751853, 128.876058, results);
+			txtInfo.append("서울시청에서 강릉시청까지 거리: " + results[0] + " m\n");
+			txtInfo.append("서울시청에서 강릉시청있는 방향: " + results[1] + " °");
+		}
+		public void onProviderDisabled(String provider) {}
+		public void onProviderEnabled(String provider) {}
+		public void onStatusChanged(String provider, int status, Bundle extras) {}
+	};	
+	
+
+}

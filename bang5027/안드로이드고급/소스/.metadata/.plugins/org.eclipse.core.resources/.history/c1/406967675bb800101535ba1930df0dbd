@@ -1,0 +1,71 @@
+package bluetooth.client;
+
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+//리모트 장치가 검색 허용을 하고 있을 경우
+//장치를 검색하는 폰에서 실행할 것
+public class MainActivity extends Activity {
+    private ListView listView;
+	private ArrayAdapter arrayAdapter;
+	
+	@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        listView = (ListView) findViewById(R.id.listView);
+        
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1);
+        listView.setAdapter(arrayAdapter);
+        
+        //이미 검색된 것 중에서 페어링된 장치 추가
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        for(BluetoothDevice bluetoothDevice : bluetoothAdapter.getBondedDevices()) {
+        	String info = "";
+			info += bluetoothDevice.getName() + "\n";
+			info += "페어링된 상태";
+			arrayAdapter.add(info);
+        }
+        
+        //사용자가 장치 검색을 시작했을 경우 페어링되지 않은 장치 추가
+        //사용자가 장치 검색을 시작하지 않을 경우 방송 발생 안됨
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        registerReceiver(receiver, filter);
+    }
+	
+	private BroadcastReceiver receiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();			
+			if(action.equals(BluetoothDevice.ACTION_FOUND)) {
+				Log.v("test", "BluetoothDevice.ACTION_FOUND");
+				String info = "";
+				BluetoothDevice bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				info += bluetoothDevice.getName() + "\n";
+				if(bluetoothDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
+					info += "페이링하기";
+				}			
+				arrayAdapter.add(info);				
+			} else if(action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
+				arrayAdapter.add("**검색 완료**");
+			}
+		}
+	};
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(receiver);
+	};
+}

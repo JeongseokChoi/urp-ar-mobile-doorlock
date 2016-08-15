@@ -1,0 +1,58 @@
+package bluetooth.client;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.UUID;
+
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+    private TextView textView;
+    private BluetoothServerSocket bluetoothServerSocket;
+	
+	@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        textView = (TextView) findViewById(R.id.textView);
+        
+        try {
+	        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	        bluetoothServerSocket = bluetoothAdapter.listenUsingRfcommWithServiceRecord(
+	        		"Test", 
+	        		UUID.fromString("Test")
+	        ); 
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        
+        thread.start();
+    }
+	
+	private Thread thread = new Thread() {
+		@Override
+		public void run() {
+			try {
+				BluetoothSocket bluetoothSocket = bluetoothServerSocket.accept();
+				InputStream is = bluetoothSocket.getInputStream();
+				Reader reader = new InputStreamReader(is);
+				BufferedReader br = new BufferedReader(reader);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		};
+	};
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		stop = true;
+	};
+}

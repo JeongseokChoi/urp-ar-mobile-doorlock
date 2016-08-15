@@ -1,0 +1,208 @@
+package app.exam;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+public class Actor {
+	//필드
+	private GameView gameView;
+	private Bitmap[] bitmaps;
+	private Rect rect;
+	private int index;
+	private Timer timer;
+	private MoveTask moveTask;
+	public int direction;
+	private int directionStartIndex;	
+	//생성자
+	public Actor(GameView gameView) {
+		this.gameView = gameView;
+		//비트맵 얻기
+		Resources resources = gameView.getResources();
+		bitmaps = new Bitmap[16];
+		for(int i=0, id=0x7f020000; i<bitmaps.length; i++, id++) {
+			bitmaps[i] = BitmapFactory.decodeResource(resources, id);
+		};
+		//초기 드로잉 영역 설정
+		rect = new Rect(0, 0, bitmaps[0].getWidth(), bitmaps[0].getHeight());
+		//타이머 생성
+		timer = new Timer();
+		//초기 방향 설정
+		direction = Arrow.DOWN;
+	}
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmaps[index], 
+				rect.left+gameView.background.rect.left, 
+				rect.top+gameView.background.rect.top, null);
+	}	
+	//이동 시작
+	public void move(int direction) {
+		this.direction = direction;
+		//해당 방향으 첫 이미지 결정
+		if(direction == Arrow.RIGHT) { directionStartIndex = 8; }
+		else if(direction == Arrow.LEFT) { directionStartIndex = 4; }
+		else if(direction == Arrow.DOWN) { directionStartIndex = 0; }
+		else if(direction == Arrow.UP) { directionStartIndex = 12; }
+		index = directionStartIndex;
+		//애니메이션 시작
+		moveTask = new MoveTask();
+		timer.schedule(moveTask, 0, 200);
+	}
+	//이동 중지
+	public void stop() {
+		if(moveTask != null) { moveTask.cancel(); }
+		timer.purge();
+	}
+	
+	//이동 애니메이션
+	private class MoveTask extends TimerTask {
+		@Override
+		public void run() {
+			//몬스터와 충돌해서 죽는지 체크
+			dieCheck();
+			//이미지 변경
+			index++;
+			if(index > directionStartIndex+3) {
+				index = directionStartIndex;
+			}
+			//오른쪽으로 이동
+			if(direction == Arrow.RIGHT) { 
+				if(rect.right < gameView.background.rect.width()) {
+					//기준 타일
+					int hTileIndex = gameView.background.getTileIndex(rect.right);
+					int vTileIndex = gameView.background.getTileIndex(rect.bottom);
+					if(rect.bottom%32 == 0) { vTileIndex--; }
+					//오른쪽 장애물 확인
+					if(rect.right%32 == 0) {						
+						int nextTileNo = gameView.background.getTileNo(vTileIndex, hTileIndex);
+						if(nextTileNo == 0 || nextTileNo == 1) { 
+							return; 
+						}
+					}
+					//배경 이동
+					if((rect.left+gameView.background.rect.left) == (gameView.getWidth()/2-rect.width()/2)) {
+						gameView.background.move(Arrow.LEFT);
+					} 
+					//캐릭터 좌표 수정
+					rect.left += 8;
+					rect.right += 8;
+				}
+			} 
+			//왼쪽으로 이동
+			else if(direction == Arrow.LEFT) {
+				if(rect.left > 0) {
+					//기준 타일
+					int hTileIndex = gameView.background.getTileIndex(rect.left);
+					int vTileIndex = gameView.background.getTileIndex(rect.bottom);
+					if(rect.bottom%32 == 0) { vTileIndex--; }
+					//왼쪽 장애물 확인
+					if(hTileIndex !=0 && rect.left%32 == 0) {
+						int nextTileNo = gameView.background.getTileNo(vTileIndex, hTileIndex-1);
+						if(nextTileNo == 0 || nextTileNo == 1) { 
+							return; 
+						}
+					}
+					//배경 이동
+					if((rect.left+gameView.background.rect.left) == (gameView.getWidth()/2-rect.width()/2)) {
+						gameView.background.move(Arrow.RIGHT);
+					}					
+					//캐릭터 좌표 수정
+					rect.left -= 8;
+					rect.right -= 8;
+				}
+			} 
+			//아래로 이동
+			else if(direction == Arrow.DOWN) {				
+				if(rect.bottom < gameView.background.rect.height()) {
+					//기준 타일
+					int hTileIndex = gameView.background.getTileIndex(rect.left);
+					int vTileIndex = gameView.background.getTileIndex(rect.bottom);
+					//바로 아래 장애물 확인
+					int nextTileNo = gameView.background.getTileNo(vTileIndex, hTileIndex);
+					if(nextTileNo == 0 || nextTileNo == 1) { return; }
+					//오른쪽 하단의 장애물 확인
+					if(rect.left%32 != 0) {
+						nextTileNo = gameView.background.getTileNo(vTileIndex, hTileIndex+1);
+						if(nextTileNo == 0 || nextTileNo == 1) { return; }
+					}
+					//배경 이동	
+					if((rect.top+gameView.background.rect.top) == (gameView.getHeight()/2-rect.height()/2)) {
+						gameView.background.move(Arrow.UP);
+					}
+					//캐릭터 좌표 수정
+					rect.top += 8;
+					rect.bottom += 8;
+				}
+			} 
+			//위로 이동
+			else if(direction == Arrow.UP) {
+				if(rect.top > 0) {
+					//기준타일
+					int hTileIndex = gameView.background.getTileIndex(rect.left);
+					int vTileIndex = gameView.background.getTileIndex(rect.top);
+					if(rect.top%32 != 0 ) { vTileIndex++; }
+					//바로 위 장애물 확인
+					int nextTileNo = gameView.background.getTileNo(vTileIndex, hTileIndex);
+					if(nextTileNo == 0 || nextTileNo == 1) { return; }
+					//오른쪽 상단의 장애물 확인
+					if(rect.left%32 != 0) {
+						nextTileNo = gameView.background.getTileNo(vTileIndex, hTileIndex+1);
+						if(nextTileNo == 0 || nextTileNo == 1) { return; }
+					}
+					//배경 이동
+					if((rect.top+gameView.background.rect.top) == (gameView.getHeight()/2-rect.height()/2)) {
+						gameView.background.move(Arrow.DOWN);	
+					} 
+					//캐릭터 좌표 수정
+					rect.top -= 8;
+					rect.bottom -= 8;
+				}
+			}
+		}
+	}
+	
+	//자신을 파괴
+	public void destroy() {
+		timer.cancel();
+		timer.purge();
+	}
+	
+	//총알 발사
+	public void fireBullet() {
+		Bullet bullet = new Bullet(gameView, rect, direction);
+		gameView.bulletPool.bullets.add(bullet);
+	}
+	
+	//몬스터와 충돌해서 죽는지 체크
+	public void dieCheck() {
+		MonsterPool monsterPool = gameView.monsterPool;
+		Monster monster = null;
+		for(int i=0; i<monsterPool.monsters.size(); i++) {
+			monster = monsterPool.monsters.get(i);
+			if(rect.intersect(monster.rect)) {
+				//게임 종료
+				gameView.gameOver();
+				break;
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

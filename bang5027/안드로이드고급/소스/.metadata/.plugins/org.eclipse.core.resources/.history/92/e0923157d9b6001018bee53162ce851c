@@ -1,0 +1,42 @@
+package game.app.exam08;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+public class Button {
+	//필드
+	private GameView gameView;
+	private Bitmap[] bitmaps;
+	private Rect rect;
+	private int index;
+	//생성자	
+	public Button(GameView gameView) {
+		Resources resources = gameView.getResources();
+		//비트맵 얻기
+		bitmaps = new Bitmap[] {
+			BitmapFactory.decodeResource(resources, R.drawable.button_01_01),
+			BitmapFactory.decodeResource(resources, R.drawable.button_01_02)
+		};
+		//초기 드로잉 영역 설정
+		rect = new Rect(3, 250, 3+bitmaps[0].getWidth(), 250+bitmaps[0].getHeight());
+	}
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmaps[index], rect.left, rect.top, null);
+	}
+	//터치되었는지 확인
+	public boolean select(float x, float y) {
+		if(rect.contains((int)x, (int)y)) {
+			index = 1;
+			return true;
+		}
+		return false;
+	}
+	//터치 해제
+	public void unselect() {
+		index = 0;
+	}
+}

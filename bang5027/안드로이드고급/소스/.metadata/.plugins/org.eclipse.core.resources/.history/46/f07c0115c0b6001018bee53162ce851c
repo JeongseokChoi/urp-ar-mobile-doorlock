@@ -1,0 +1,25 @@
+package app.exam;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.view.View;
+
+public class GameView extends View {
+	public GameView(Context context) {
+		super(context);
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		Resources resources = getResources();
+		
+		Bitmap bitmap1 = BitmapFactory.decodeResource(resources, R.drawable.map_01);
+		Bitmap bitmap2 = BitmapFactory.decodeResource(resources, R.drawable.actor_01_09);
+		
+		canvas.drawBitmap(bitmap1, 0, 0, null);
+		canvas.drawBitmap(bitmap2, 0, 100, null);
+	}
+}

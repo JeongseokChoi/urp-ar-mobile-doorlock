@@ -1,0 +1,55 @@
+package app.exam;
+
+import game.app.R;
+import game.app.exam10.Arrow;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+public class Background {
+	//필드
+	private GameView gameView;
+	private Bitmap[] bitmaps;
+	public Rect rect;
+	//생성자	
+	public Background(GameView gameView) {
+		this.gameView = gameView;
+		//비트맵 얻기
+		Resources resources = gameView.getResources();
+		bitmaps = new Bitmap[] {
+			BitmapFactory.decodeResource(resources, R.drawable.map_01)
+		};
+		//초기 드로잉 영역 설정
+		rect = new Rect(0, 0, bitmaps[0].getWidth(), bitmaps[0].getHeight());
+	}
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmaps[0], rect.left, rect.top, null);
+	}
+	//배경 이동
+	public void move(int direction) {
+		if(direction == Arrow.RIGHT) {
+			if(rect.left < 0) {
+				rect.left += 8;
+				rect.right += 8;
+			}
+		} else if(direction == Arrow.LEFT) {
+			if(rect.left > -(rect.width()-gameView.getWidth())) {
+				rect.left -= 8;
+				rect.right -= 8;
+			}
+		} else if(direction == Arrow.DOWN) {
+			if(rect.top < 0) {
+				rect.top += 8;
+				rect.bottom += 8;
+			}
+		} else if(direction == Arrow.UP) {
+			if(rect.top > -(rect.height()-gameView.getHeight())) {
+				rect.top -= 8;
+				rect.bottom -= 8;
+			}
+		}
+	}
+}

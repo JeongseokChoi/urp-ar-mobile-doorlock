@@ -1,0 +1,53 @@
+package app.exam;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import network.app.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);		
+		
+		ImageView imageView = (ImageView) findViewById(R.id.imageView);		
+		
+		Bitmap bitmap = getImageDownload();
+		imageView.setImageBitmap(bitmap);		
+	}
+	
+	public Bitmap getImageDownload() {
+		Bitmap bitmap = null;
+		try {
+			URL url = new URL("http://222.235.48.62:8080/network.web/image.png");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			if(conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				InputStream is = conn.getInputStream();
+				bitmap = BitmapFactory.decodeStream(is);
+				is.close();
+			}
+			conn.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bitmap;
+	}
+}

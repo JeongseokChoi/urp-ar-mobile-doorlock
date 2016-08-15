@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="ar.app"
+	android:versionCode="1"
+	android:versionName="1.0">      
+	<application android:icon="@drawable/icon" android:label="@string/app_name">
+		<uses-library android:name="com.google.android.maps"/>
+		<activity android:name=".MainActivity"
+				  android:label="@string/app_name"
+	              android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+	    </activity>
+	    <activity android:name=".exam01.Exam01Activity" 
+				android:screenOrientation="landscape"
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/> 
+		<activity android:name=".exam02.Exam02Activity" 
+				android:screenOrientation="landscape"
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/> 	
+		<activity android:name=".exam03.Exam03Activity" 
+				android:screenOrientation="landscape"
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+		<activity android:name=".exam04.Exam04Activity" 
+				android:screenOrientation="landscape"
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>	
+		<activity android:name=".exam05.Exam05Activity" 
+				android:screenOrientation="landscape"
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>	
+		<activity android:name=".exam06.Exam06Activity" 
+				android:screenOrientation="landscape"
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+		<activity android:name=".exam06.LocationOverlayActivity" 
+				android:screenOrientation="landscape"
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>									        
+	</application>
+
+	<uses-permission android:name="android.permission.CAMERA"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+</manifest>

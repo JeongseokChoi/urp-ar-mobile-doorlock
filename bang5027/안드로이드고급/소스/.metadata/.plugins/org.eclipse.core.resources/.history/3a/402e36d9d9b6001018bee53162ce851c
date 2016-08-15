@@ -1,0 +1,119 @@
+package app.exam;
+
+import game.app.exam08.Button;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+	//필드
+	private SurfaceHolder surfaceHolder;
+	private DrawThread drawThread;
+	public boolean gameover;	
+	public Background background;
+	private Actor actor;
+	private Fire fire;
+	private Arrow arrow;
+	public MonsterPool monsterPool;
+	public Button button;
+	
+	//생성자
+	public GameView(Context context) {
+		super(context);
+		//캐릭터 생성
+		background = new Background(this);
+		actor = new Actor(this);
+		fire = new Fire(this);
+		arrow = new Arrow(this);
+		monsterPool = new MonsterPool(this);
+		button = new Button(this);
+		//가상 화면 상태 콜백 설정
+		surfaceHolder = getHolder();
+		surfaceHolder.addCallback(this);
+	}
+	//가상 화면 생성시 실행
+	public void surfaceCreated(SurfaceHolder holder) {
+		//가상 화면에 드로잉 시작
+		drawThread = new DrawThread();
+		drawThread.start();
+	}	
+	//가상 화면 크기 변경시 실행
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}	
+	//가상 화면 파괴시 실행
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		//게임 중지
+		gameOver();
+	}
+	//드로잉 스레드
+	private class DrawThread extends Thread {
+		@Override
+		public void run() {
+			boolean stop = false;
+			Canvas canvas = null;
+			//드로잉 반복
+			while(!stop) {
+				//캔버스 얻기
+				canvas = surfaceHolder.lockCanvas();
+				//가상 화면에 배경 및 캐릭터 드로잉
+				background.draw(canvas);
+				actor.draw(canvas);
+				fire.draw(canvas);
+				arrow.draw(canvas);
+				monsterPool.draw(canvas);
+				button.draw(canvas);
+				//게임 종료가 될 때
+				if(gameover) {
+					stop = true;
+				}
+				//가상 화면을 실제 화면으로 전달
+				surfaceHolder.unlockCanvasAndPost(canvas);
+			}
+		}
+	};
+	//터치 이벤트 처리
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		//눌렀을 때
+		if(event.getAction() == MotionEvent.ACTION_DOWN) {
+			if(gameover == false) {
+				//선택한 방향 얻기
+				int direction = arrow.select(event.getX(), event.getY());
+				if(direction != 0) {
+					//해당 방향으로 액터를 이동
+					actor.move(direction);
+				}
+				//슈팅 버튼을 눌렀는지 확인
+				boolean selected = button.select(event.getX(), event.getY());
+				if(selected) {
+					
+				}
+			}
+		} 
+		//놓았을 때
+		else if(event.getAction() == MotionEvent.ACTION_UP) {
+			if(gameover == false) {
+				//방향키 초기상태로 만듬
+				arrow.unselect();
+				//액터 정지
+				actor.stop();
+			}
+		}
+		return true;
+	}
+	//게임 중지
+	public void gameOver() {
+		try {
+			gameover = true;
+			//애니메이션 중지
+			fire.destory();
+			actor.destroy();
+			//버튼  초기 상태로 만듬
+			button.unselect();
+			//백그라운드 스레드가 종료될 때까지 기다림
+			drawThread.join();
+		} catch(Exception e) {}
+	}
+}
+

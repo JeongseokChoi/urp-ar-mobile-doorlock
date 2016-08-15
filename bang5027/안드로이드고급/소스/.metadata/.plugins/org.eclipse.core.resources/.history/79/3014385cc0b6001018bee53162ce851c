@@ -1,0 +1,31 @@
+package app.exam;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+public class Actor {
+	//필드
+	private GameView gameView;
+	private Bitmap[] bitmaps;
+	private Rect rect;
+	private int index;
+	//생성자
+	public Actor(GameView gameView) {
+		this.gameView = gameView;
+		//비트맵 얻기
+		Resources resources = gameView.getResources();
+		bitmaps = new Bitmap[16];
+		for(int i=0, id=0x7f020000; i<bitmaps.length; i++, id++) {
+			bitmaps[i] = BitmapFactory.decodeResource(resources, id);
+		};
+		//초기 드로잉 영역 설정
+		rect = new Rect(0, 0, bitmaps[0].getWidth(), bitmaps[0].getHeight());
+	}
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmaps[index], rect.left, rect.top, null);
+	}
+}

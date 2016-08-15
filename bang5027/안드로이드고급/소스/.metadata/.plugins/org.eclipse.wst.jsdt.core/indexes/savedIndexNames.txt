@@ -1,0 +1,1 @@
+INDEX VERSION 1.122+D:\집필폴더\안드로이드고급\소스\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes

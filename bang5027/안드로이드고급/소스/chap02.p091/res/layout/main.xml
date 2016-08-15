@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">    	
+
+ 	<app.exam.CameraView 
+ 		android:id="@+id/cameraView "
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"/> 
+	
+	<app.exam.PitchView 
+		android:id="@+id/pitchView"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"/>  			
+		
+	<app.exam.RollView 
+		android:id="@+id/rollView"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"/>  
+		
+	<app.exam.AzimuthView 
+		android:id="@+id/azimuthView"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"/>		
+
+</FrameLayout>

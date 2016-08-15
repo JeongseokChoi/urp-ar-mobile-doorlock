@@ -1,0 +1,86 @@
+package app.exam;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.SoundPool;
+
+public class Monster {
+	//필드
+	private GameView gameView;
+	private static Bitmap[] bitmaps;
+	public Rect rect;
+	private int index;
+	private Timer timer;
+	private boolean dying;
+	private SoundPool soundPool;
+	private int explosionSound;
+	
+	//생성자
+	public Monster(GameView gameView, Rect rect) {
+		this.gameView = gameView;
+		//비트맵 얻기
+		Resources resources = gameView.getResources();
+		if(bitmaps == null) {
+			bitmaps = new Bitmap[13]; 
+			bitmaps[0] = BitmapFactory.decodeResource(resources, R.drawable.monster_01_01);
+			for(int i=1, id=0x7f02001c; i<=12; i++, id++) {
+				bitmaps[i] = BitmapFactory.decodeResource(resources, id);
+			};
+		}
+		//초기 드로잉 영역 설정
+		this.rect = rect;
+		//타이머 생성
+		timer = new Timer();
+		//사운드 풀 생성
+		soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+		explosionSound = soundPool.load(gameView.getContext(), R.raw.explosion, 1);
+	}
+	
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		//몬스터 드로잉
+		if(index < 8 ) {
+			canvas.drawBitmap(bitmaps[0], 
+					rect.left+gameView.background.rect.left, 
+					rect.top+gameView.background.rect.top, 
+					null);
+		} 
+		//효과 드로잉
+		if(index != 0) {
+			canvas.drawBitmap(bitmaps[index], 
+					rect.left+gameView.background.rect.left-(bitmaps[1].getWidth()/2-rect.width()/2), 
+					rect.top+gameView.background.rect.top-(bitmaps[1].getHeight()/2-rect.height()/2), 
+					null);
+		}
+	}
+	//총알을 맞을  때 실행
+	public void die() {
+		if(dying == false) {
+			//효과 애니메이션 시작
+			dying = true;
+			timer.schedule(timerTask, 0, 300);
+		}
+	}
+	//효과 애니메이션
+	private TimerTask timerTask = new TimerTask() {
+		@Override
+		public void run() {
+			//효과 비트맵 변경
+			index++;
+			if(index == bitmaps.length-1) {
+				//애니메이션 중지
+				timer.cancel();
+				timer.purge();
+				//몬스터 제거
+				gameView.monsterPool.monsters.remove(Monster.this);
+			}
+		}
+	};
+}

@@ -1,0 +1,69 @@
+package app.exam;
+
+import android.app.Activity;
+import android.content.Context;
+import android.location.Criteria;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+	private TextView txtInfo;
+	private LocationManager locationManager;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		txtInfo = (TextView) findViewById(R.id.txtInfo);
+		
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);		
+		LocationProvider gpsProvider = 
+			locationManager.getProvider(LocationManager. GPS_PROVIDER);
+		LocationProvider networkProvider = 
+			locationManager.getProvider(LocationManager. NETWORK_PROVIDER);
+		
+		printInfo(gpsProvider);
+		printInfo(networkProvider);
+	}
+	
+	private void printInfo(LocationProvider locationProvider) {		
+		txtInfo.append("이름: " + locationProvider.getName() + "\n");
+		txtInfo.append("현재이용가능여부: " + 
+				locationManager.isProviderEnabled(locationProvider.getName()) + "\n");
+		txtInfo.append("위성필요여부: " + locationProvider.requiresSatellite() + "\n");
+		txtInfo.append("인터넷접속필요여부: " + locationProvider.requiresNetwork() + "\n");
+		txtInfo.append("기지국필요여부: " + locationProvider.requiresCell() + "\n");
+		
+		txtInfo.append("고도정보포함여부: " + locationProvider.supportsAltitude() + "\n");
+		txtInfo.append("방향정보포함여부: " + locationProvider.supportsBearing() + "\n");
+		txtInfo.append("속도정보포함여부: " + locationProvider.supportsSpeed() + "\n");
+		
+		String accuracy = "";
+		switch(locationProvider.getAccuracy()) {
+			//2.2이전까지 사용 (AVD 2.3.3도 여전히 사용)
+			case Criteria.ACCURACY_FINE: 	accuracy="좋음"; 	break;
+			case Criteria.ACCURACY_COARSE: 	accuracy="근사치"; 	break;
+			/*
+			//2.3부터 사용 
+			case Criteria.ACCURACY_LOW: accuracy="500m 이상 오차"; break;
+			case Criteria.ACCURACY_MEDIUM: accuracy="100~500m 오차"; break;
+			case Criteria.ACCURACY_HIGH: accuracy="0~100m 오차"; break;
+			*/
+		}
+		txtInfo.append("정확성정도: " + accuracy + "\n");
+		
+		String power = "";
+		switch(locationProvider.getPowerRequirement()) {
+			case Criteria.POWER_LOW: 	power="적게 사용"; break;
+			case Criteria.POWER_MEDIUM: power="중간 사용"; break;
+			case Criteria.POWER_HIGH: 	power="많이 사용"; break;
+		}
+		txtInfo.append("전원사용정도: " + power + "\n");
+		
+		txtInfo.append("요금지불여부: " + locationProvider.hasMonetaryCost() + "\n");
+		txtInfo.append("\n");
+	}
+
+}

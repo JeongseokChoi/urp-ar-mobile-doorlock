@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+	<TextView
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="[가속도 센서를 이용해서 가속도 얻기]"/>	     
+    
+	<TextView
+		android:id="@+id/txtAccX"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="X축 가속도: "/>	    
+	    
+	<TextView
+		android:id="@+id/txtAccY"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Y축 가속도: "/>
+	    
+	<TextView
+		android:id="@+id/txtAccZ"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Z축 가속도: "/>           
+    
+</LinearLayout>

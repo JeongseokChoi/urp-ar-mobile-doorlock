@@ -1,0 +1,54 @@
+package app.exam;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+public class Fire {
+	//필드
+	private GameView gameView;
+	private Bitmap[] bitmaps;
+	private Rect rect;
+	private int index;
+	private Timer timer;
+	//생성자	
+	public Fire(GameView gameView) {
+		this.gameView = gameView;
+		//비트맵 얻기
+		Resources resources = gameView.getResources();
+		bitmaps = new Bitmap[] {
+			BitmapFactory.decodeResource(resources, R.drawable.fire_01_01),
+			BitmapFactory.decodeResource(resources, R.drawable.fire_01_02),
+			BitmapFactory.decodeResource(resources, R.drawable.fire_01_03),
+		};
+		//초기 드로잉 영역 설정
+		rect = new Rect(320, 192, 320+bitmaps[0].getWidth(),192+bitmaps[0].getHeight());
+		//타이머 시작
+		timer = new Timer();
+		timer.schedule(timerTask, 0, 200);
+	}
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmaps[index], rect.left, rect.top, null);
+	}	
+	//불꽃 애니메이션
+	private TimerTask timerTask = new TimerTask() {
+		@Override
+		public void run() {
+			index++;
+			if(index == bitmaps.length) {
+				index = 0;
+			}
+		}
+	};
+	//자신을 파괴
+	public void destory() {
+		timer.cancel();
+		timer.purge();
+	}
+}

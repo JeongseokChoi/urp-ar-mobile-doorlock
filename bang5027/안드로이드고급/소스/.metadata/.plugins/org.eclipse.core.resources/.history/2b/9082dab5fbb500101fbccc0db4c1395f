@@ -1,0 +1,76 @@
+package app.exam;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.media.MediaPlayer;
+import android.util.AttributeSet;
+import android.view.SurfaceHolder;
+import android.view.View;
+
+public class LadybugView extends View {
+	private Bitmap background, bitmap;
+	public float accX, accY;
+	private float maxX, maxY;
+	private float currX, currY, prevX, prevY;
+	private boolean play;
+	private MediaPlayer mediaPlayer;
+	
+	public LadybugView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		background = BitmapFactory.decodeResource(getResources(), R.drawable.grass);
+		bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ladybug);
+		mediaPlayer = MediaPlayer.create(getContext(), R.raw.ladybug);
+		mediaPlayer.setVolume(10, 10);
+	}
+	
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+	}
+	
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+		maxX = this.getWidth() - bitmap.getWidth();
+		maxY = this.getHeight() - bitmap.getHeight();			
+		prevX = this.getWidth()/2-bitmap.getWidth()/2;
+		prevY = this.getHeight()/2-bitmap.getHeight()/2;
+		draw();
+		play = true;
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+	}
+
+	public void draw() {
+		if(play) {
+			currX = prevX - accX*5;
+			currY = prevY + accY*5;
+			
+			if(currX < 0) {
+				currX = 0;
+				mediaPlayer.start();
+			} else if(currX > maxX) {
+				currX = maxX;
+				mediaPlayer.start();
+			}
+			
+			if(currY < 0) {
+				currY = 0;
+				mediaPlayer.start();
+			} else if(currY > maxY) {
+				currY = maxY;
+				mediaPlayer.start();
+			}
+			
+			Canvas canvas = getHolder().lockCanvas();
+			canvas.drawBitmap(background, 0, 0, null);
+			canvas.drawBitmap(bitmap, currX, currY, null);
+			getHolder().unlockCanvasAndPost(canvas);
+			
+			prevX = currX;
+			prevY = currY;
+		}
+	}
+}

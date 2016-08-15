@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<LinearLayout
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">	
+		<Button  
+			android:id="@+id/btnExam01"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="01.카메라 미리보기"/>
+		<Button  
+			android:id="@+id/btnExam02"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="02.컨텐츠  겹쳐기"/>   
+		<Button  
+			android:id="@+id/btnExam03"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="03.그리드와 거리 표시"/>     
+		<Button  
+			android:id="@+id/btnExam04"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="04.거리와 방향을 갖는 컨텐츠"/>
+		<Button  
+			android:id="@+id/btnExam05"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="05.장비의 방향에 따라 컨텐츠 회전"/>    
+		<Button  
+			android:id="@+id/btnExam06"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+		    android:text="06.컨텐츠 터치 이벤트 처리"/> 		    
+	</LinearLayout>
+</ScrollView>

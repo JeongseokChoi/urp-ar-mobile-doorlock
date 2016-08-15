@@ -1,0 +1,61 @@
+package app.exam;
+
+import java.io.IOException;
+import java.util.List;
+
+import android.app.Activity;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {	
+	private TextView txtInfo;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		txtInfo = (TextView) findViewById(R.id.txtInfo);
+		getLocation();
+	}
+	
+	private void getLocation() {
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				Geocoder geocoder = new Geocoder(GetLocationByAddressActivity.this);
+				List<Address> addressList = null;		
+				try {
+					addressList = geocoder.getFromLocationName("스타벅스", 5);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Message msg = Message.obtain();
+				msg.obj = addressList;
+				handler.sendMessage(msg);
+			}
+		};
+		thread.start();
+	}
+	
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			List<Address> addressList = (List<Address>) msg.obj;
+			if(addressList != null && addressList.size() != 0) {
+				for(int i=0; i<addressList.size(); i++) {
+					Address address = addressList.get(i);
+					txtInfo.append("위도: " + address.getLatitude() + "\n");
+					txtInfo.append("경도: " + address.getLongitude() + "\n\n");
+				}
+			} else {
+				txtInfo.append("해당 주소를 찾지 못했습니다.");
+			}
+		}
+	};
+
+
+}

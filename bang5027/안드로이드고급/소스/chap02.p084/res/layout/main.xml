@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+	<TextView
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="[방향 센서를 이용해서 방향 얻기]"/>	     
+    
+	<TextView
+		android:id="@+id/txtAzimuth"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Azimuth: "/>	    
+	    
+	<TextView
+		android:id="@+id/txtPitch"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Pitch: "/>
+	    
+	<TextView
+		android:id="@+id/txtRoll"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Roll: "/>           
+    
+</LinearLayout>

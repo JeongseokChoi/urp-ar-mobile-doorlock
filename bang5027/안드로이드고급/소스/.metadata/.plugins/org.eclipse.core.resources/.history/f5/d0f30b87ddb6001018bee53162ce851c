@@ -1,0 +1,98 @@
+package app.exam;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+public class Bullet {
+	//필드
+	private GameView gameView;
+	private static Bitmap[] bitmaps;
+	private Rect rect;
+	private int index;
+	private Timer timer;	
+	private int direction;
+	//생성자
+	public Bullet(GameView gameView, Rect actorRect, int direction) {
+		this.gameView = gameView;
+		this.direction = direction;
+		//비트맵 얻기
+		Resources resources = gameView.getResources();
+		if(bitmaps == null) {
+			bitmaps = new Bitmap[] {
+				BitmapFactory.decodeResource(resources, R.drawable.bullet_01_01)
+			};
+		}
+		//초기 드로잉 영역 설정
+		rect = new Rect(
+				actorRect.left + actorRect.width()/2 - 5,
+				actorRect.top + actorRect.height()/2 - 5,
+				actorRect.left + actorRect.width()/2 - 5 + bitmaps[0].getWidth(),
+				actorRect.top + actorRect.height()/2 - 5 + bitmaps[0].getHeight()
+		);
+		//타이머 시작
+		timer = new Timer();
+		timer.schedule(timerTask, 0, 100);
+	}
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmaps[index], 
+				rect.left+gameView.background.rect.left, 
+				rect.top+gameView.background.rect.top, 
+				null);
+	}
+	//이동 애니메이션
+	private TimerTask timerTask = new TimerTask() {
+		@Override
+		public void run() {
+			//오른쪽으로 이동
+			if(direction == Arrow.RIGHT) {
+				if((rect.right+gameView.background.rect.left) < gameView.getWidth()) {
+					rect.left += 8;
+					rect.right += 8;
+				} else {
+					destroy();
+				}
+			} 
+			//왼쪽으로 이동
+			else if(direction == Arrow.LEFT) {
+				if((rect.left+gameView.background.rect.left) > 0) {
+					rect.left -= 8;
+					rect.right -= 8;
+				} else {
+					destroy();
+				}
+			} 
+			//아래쪽으로 이동
+			else if(direction == Arrow.DOWN) {
+				if((rect.bottom+gameView.background.rect.top) < gameView.getHeight()) {
+					rect.top += 8;
+					rect.bottom += 8;
+				} else {
+					destroy();
+				}
+			} 
+			//위로 이동
+			else if(direction == Arrow.UP) {
+				if((rect.top+gameView.background.rect.top) > 0) {
+					rect.top -= 8;
+					rect.bottom -= 8;
+				} else {
+					destroy();
+				}
+			}
+		}
+	};	
+
+	//자신을 파괴
+	private void destroy() {
+		timer.cancel();
+		timer.purge();
+		gameView.bulletPool.bullets.remove(Bullet.this);
+	}
+}

@@ -1,0 +1,51 @@
+package app.exam;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);		
+		
+		TextView textView = (TextView) findViewById(R.id.textView);		
+		
+		String xml = getXML();
+		textView.setText(xml);
+	}
+	
+	public String getXML() {
+		String xml = "";
+		try {
+			URL url = new URL("http://175.125.160.98:8080/chap03.web/contents_xml.jsp");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			if(conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				InputStream is = conn.getInputStream();
+				Reader reader = new InputStreamReader(is, "euc-kr");
+				BufferedReader br = new BufferedReader(reader);
+				String data = null;
+				while(true) {
+					data = br.readLine();
+					if(data == null) break;
+					xml += data + "\n";
+				}
+				br.close(); 
+				reader.close(); 
+				is.close();
+			}
+			conn.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return xml;
+	}	
+}

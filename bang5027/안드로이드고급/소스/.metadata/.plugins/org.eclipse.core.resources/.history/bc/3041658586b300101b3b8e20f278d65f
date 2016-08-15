@@ -1,0 +1,71 @@
+package app.exam;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends MapActivity {	
+	private MapView mapView;
+	private LocationManager locationManager;	
+	private boolean firstLocation;
+	
+	@Override
+	protected boolean isRouteDisplayed() {
+		return false;
+	};
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.mapview);
+		
+		mapView = (MapView) findViewById(R.id.mapView);	
+		mapView.setBuiltInZoomControls(true);
+		mapView.setSatellite(true);
+
+		firstLocation = true;
+		
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		locationManager.requestLocationUpdates(
+				LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		locationManager.removeUpdates(locationListener);
+	}
+	
+	private LocationListener locationListener = new LocationListener() {
+		public void onLocationChanged(Location location) {
+			double latitude =  location.getLatitude() * 1E6;
+			double longitude = location.getLongitude() * 1E6;
+			GeoPoint geoPoint = new GeoPoint((int)latitude, (int)longitude);
+			
+			MapController mapController = mapView.getController();
+			mapController.setZoom(16);
+			
+			if(firstLocation) {
+				mapController.setCenter(geoPoint);
+				firstLocation = false;
+			} else {
+				mapController.animateTo(geoPoint);
+			}
+		}
+		public void onProviderDisabled(String provider) {}
+		public void onProviderEnabled(String provider) {}
+		public void onStatusChanged(String provider, int status, Bundle extras) {}
+	};
+
+}

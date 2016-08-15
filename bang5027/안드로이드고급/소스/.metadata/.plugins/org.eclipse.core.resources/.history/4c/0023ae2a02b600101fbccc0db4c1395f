@@ -1,0 +1,31 @@
+package app.exam;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.view.View;
+
+public class DrawView extends View {
+	private Bitmap bitmap;
+	
+	public DrawView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.compass);
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		int x = getWidth()/2 - bitmap.getWidth()/2;
+		int y = getHeight()/2 - bitmap.getHeight()/2;
+		
+		//canvas.drawBitmap(bitmap, x, y, null);
+		
+		int cx = getWidth()/2;
+		int cy = getHeight()/2;
+		canvas.rotate(-90, cx, cy);
+		canvas.drawBitmap(bitmap, x, y, null);
+		
+	}
+}

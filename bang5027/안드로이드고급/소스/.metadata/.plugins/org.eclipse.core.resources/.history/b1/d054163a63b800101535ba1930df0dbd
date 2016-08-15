@@ -1,0 +1,28 @@
+package bluetooth.client;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+    private TextView textView;
+    private boolean stop;
+	
+	@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        textView = (TextView) findViewById(R.id.textView);
+        
+    }
+	
+	private Thread thread = new Thread() {
+		
+	};
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(receiver);
+	};
+}

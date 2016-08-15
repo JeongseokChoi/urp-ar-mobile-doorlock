@@ -1,0 +1,62 @@
+package app.exam;
+
+import game.app.R;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+public class Arrow {
+	//필드
+	private GameView gameView;
+	private Bitmap[] bitmaps;
+	private Rect rect;
+	private int index;
+	private Rect[] arrows;	
+	//방향키 상수
+	public static int RIGHT = 1;
+	public static int LEFT = 2;
+	public static int DOWN = 3;
+	public static int UP = 4;
+	//생성자	
+	public Arrow(GameView gameView) {
+		this.gameView = gameView;
+		//비트맵 얻기
+		Resources resources = gameView.getResources();
+		bitmaps = new Bitmap[] {
+			BitmapFactory.decodeResource(resources, R.drawable.arrow_01_01),
+			BitmapFactory.decodeResource(resources, R.drawable.arrow_01_02), //우
+			BitmapFactory.decodeResource(resources, R.drawable.arrow_01_03), //좌
+			BitmapFactory.decodeResource(resources, R.drawable.arrow_01_04), //하
+			BitmapFactory.decodeResource(resources, R.drawable.arrow_01_05)  //상
+		};
+		//초기 드로잉 영역 설정
+		rect = new Rect(384, 224, 384+bitmaps[0].getWidth(), 224+bitmaps[0].getHeight());
+		//방향별 화살표 영역 설정
+		arrows = new Rect[] {
+			new Rect(448, 256, 480, 288), //우
+			new Rect(384, 256, 416, 288), //좌
+			new Rect(416, 288, 448, 320), //하
+			new Rect(416, 224, 448, 256)  //상
+		};
+	}
+	//비트맵 드로잉
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmaps[index], rect.left, rect.top, null);
+	}
+	//터치한 좌표로 부터 방향키 선택
+	public int select(float x, float y) {
+		for(int i=0; i<4; i++) {
+			if(arrows[i].contains((int)x, (int)y)) {
+				index = i + 1;
+				return index;
+			}	
+		}
+		return 0;
+	}
+	//방향키 선택 해제
+	public void unselect() {
+		index = 0;
+	}	
+}
