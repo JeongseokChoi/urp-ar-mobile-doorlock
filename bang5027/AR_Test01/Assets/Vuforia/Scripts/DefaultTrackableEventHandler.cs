@@ -44,18 +44,25 @@ namespace Vuforia
         /// tracking state changes.
         /// </summary>
         public void OnTrackableStateChanged(
-                                        TrackableBehaviour.Status previousStatus,
+			                                        TrackableBehaviour.Status previousStatus,
                                         TrackableBehaviour.Status newStatus)
         {
+			Canvas[] cp = GetComponentsInChildren<Canvas> (true);
             if (newStatus == TrackableBehaviour.Status.DETECTED ||
                 newStatus == TrackableBehaviour.Status.TRACKED ||
                 newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
             {
                 OnTrackingFound();
+				foreach (Canvas component in cp) {
+					component.enabled = true;
+				}
             }
             else
             {
                 OnTrackingLost();
+				foreach (Canvas component in cp) {
+					component.enabled = false;
+				}
             }
         }
 
