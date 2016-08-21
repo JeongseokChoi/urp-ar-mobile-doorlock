@@ -15,5 +15,13 @@ public class button7 : MonoBehaviour {
 
 	public void onClick () {
 		Debug.Log ("button 7 clicked");
+		SetStack.password.Push (7);
+
+		int c = SetStack.password.Count;
+
+		manage_text.t.text = "";
+		for (int i = 0; i < c; i++) {
+			manage_text.t.text += "X";
+		}
 	}
 }

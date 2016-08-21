@@ -15,5 +15,13 @@ public class buttonDel : MonoBehaviour {
 
 	public void onClick () {
 		Debug.Log ("button del clicked");
+		SetStack.password.Pop ();
+
+		int c = SetStack.password.Count;
+
+		manage_text.t.text = "";
+		for (int i = 0; i < c; i++) {
+			manage_text.t.text += "X";
+		}
 	}
 }
