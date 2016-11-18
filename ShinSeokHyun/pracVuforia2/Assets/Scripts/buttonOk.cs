@@ -28,6 +28,6 @@ public class buttonOk : MonoBehaviour {
 			tmpstr += temp.Pop ();
 		}
 
-		BtConnector.sendString (tmpstr);
+		if(BtConnector.isConnected()) BtConnector.sendString (tmpstr);
 	}
 }

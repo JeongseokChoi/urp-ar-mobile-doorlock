@@ -31,9 +31,7 @@ namespace Vuforia
             {
                 mTrackableBehaviour.RegisterTrackableEventHandler(this);
             }
-			if (!BtConnector.isBluetoothEnabled ()){
-				BtConnector.askEnableBluetooth();
-			} else BtConnector.connect();
+
         }
 
         #endregion // UNTIY_MONOBEHAVIOUR_METHODS
@@ -60,6 +58,10 @@ namespace Vuforia
 				{
 					component.enabled = true;
 				}
+				BtConnector.moduleName ("upr_mobile_doorlock");
+				if (!BtConnector.isBluetoothEnabled ()) {
+					BtConnector.askEnableBluetooth();
+				} else BtConnector.connect();
             }
             else
             {
