@@ -45,6 +45,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Android Microcontroller Bluetooth\Demos\Basic Demo\BasicDemo.cs" />
+     <Compile Include="Assets\Android Microcontroller Bluetooth\Demos\Bluetooth Joystick Tutorial\ReadJoystick.cs" />
+     <Compile Include="Assets\Android Microcontroller Bluetooth\Demos\Bluetooth Terminal (Bytes level)\BytesTerminal.cs" />
+     <Compile Include="Assets\Android Microcontroller Bluetooth\Demos\Bluetooth Terminal\Terminal.cs" />
+     <Compile Include="Assets\Android Microcontroller Bluetooth\Plugins\BtController\BtConnection.cs" />
+     <Compile Include="Assets\Android Microcontroller Bluetooth\Plugins\BtController\BtConnector.cs" />
      <Compile Include="Assets\Scripts\SetStack.cs" />
      <Compile Include="Assets\Scripts\button0.cs" />
      <Compile Include="Assets\Scripts\button1.cs" />
@@ -75,6 +81,7 @@
      <Compile Include="Assets\Vuforia\Scripts\Internal\ComponentFactoryStarterBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\Internal\IOSUnityPlayer.cs" />
      <Compile Include="Assets\Vuforia\Scripts\Internal\VuforiaBehaviourComponentFactory.cs" />
+     <Compile Include="Assets\Vuforia\Scripts\Internal\WSAUnityPlayer.cs" />
      <Compile Include="Assets\Vuforia\Scripts\KeepAliveBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\MarkerBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\MaskOutBehaviour.cs" />
@@ -93,24 +100,30 @@
      <Compile Include="Assets\Vuforia\Scripts\VideoBackgroundBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\VideoBackgroundManager.cs" />
      <Compile Include="Assets\Vuforia\Scripts\VirtualButtonBehaviour.cs" />
+     <Compile Include="Assets\Vuforia\Scripts\VuMarkBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\VuforiaBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\WebCamBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\WireframeBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\WireframeTrackableEventHandler.cs" />
      <Compile Include="Assets\Vuforia\Scripts\WordBehaviour.cs" />
-     <None Include="Assets\StreamingAssets\QCAR\test001.xml" />
+     <None Include="Assets\Android Microcontroller Bluetooth\Android Microcontroller Bluetooth\Arduino Basic Test\PlugINTestArduino\Read me.txt" />
      <None Include="Assets\Vuforia\Shaders\ColoredLines.shader" />
      <None Include="Assets\link.xml" />
      <None Include="Assets\Vuforia\Shaders\VertexLitWithZ.shader" />
      <None Include="Assets\Vuforia\Shaders\RenderVideoBackground.shader" />
-     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+     <None Include="Assets\Android Microcontroller Bluetooth\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\Vuforia\Shaders\VideoBackground.shader" />
      <None Include="Assets\Vuforia\Editor\WebcamProfiles\profiles.xml" />
      <None Include="Assets\Vuforia\Shaders\DepthMask.shader" />
-     <None Include="Assets\readme_SDK.txt" />
+     <None Include="Assets\Android Microcontroller Bluetooth\Demos\Bluetooth Terminal (Bytes level)\Read me.txt" />
+     <None Include="Assets\license_3rdpartynotice.txt" />
+     <None Include="Assets\Android Microcontroller Bluetooth\Users of 1.x should read me.txt" />
+     <None Include="Assets\StreamingAssets\QCAR\vumark.xml" />
      <None Include="Assets\Vuforia\Shaders\ClippingMask.shader" />
      <None Include="Assets\Vuforia\Shaders\BrightTexture.shader" />
-     <None Include="Assets\license_3rdpartynotice.txt" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+     <None Include="Assets\readme_SDK.txt" />
+     <None Include="Assets\Android Microcontroller Bluetooth\2.X users should read me.txt" />
      <None Include="Assets\Vuforia\Shaders\Text3D.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

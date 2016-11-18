@@ -31,6 +31,9 @@ namespace Vuforia
             {
                 mTrackableBehaviour.RegisterTrackableEventHandler(this);
             }
+			if (!BtConnector.isBluetoothEnabled ()){
+				BtConnector.askEnableBluetooth();
+			} else BtConnector.connect();
         }
 
         #endregion // UNTIY_MONOBEHAVIOUR_METHODS
@@ -48,7 +51,6 @@ namespace Vuforia
                                         TrackableBehaviour.Status newStatus)
         {
 			Canvas[] canvasComponents = GetComponentsInChildren<Canvas> (true);
-
             if (newStatus == TrackableBehaviour.Status.DETECTED ||
                 newStatus == TrackableBehaviour.Status.TRACKED ||
                 newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
@@ -84,16 +86,14 @@ namespace Vuforia
             // Enable rendering:
             foreach (Renderer component in rendererComponents)
             {
-				component.enabled = true;
+                component.enabled = true;
             }
 
             // Enable colliders:
             foreach (Collider component in colliderComponents)
             {
-				component.enabled = true;
+                component.enabled = true;
             }
-
-
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
         }
@@ -103,24 +103,18 @@ namespace Vuforia
         {
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
-			Canvas[] canvasComponents = GetComponentsInChildren<Canvas> (true);
 
             // Disable rendering:
             foreach (Renderer component in rendererComponents)
             {
-				component.enabled = false;
+                component.enabled = false;
             }
 
             // Disable colliders:
             foreach (Collider component in colliderComponents)
             {
-				component.enabled = false;
+                component.enabled = false;
             }
-
-			foreach (Canvas component in canvasComponents)
-			{
-				component.enabled = false;
-			}
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
         }

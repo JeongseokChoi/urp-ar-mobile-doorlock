@@ -14,9 +14,9 @@ public class buttonOk : MonoBehaviour {
 	}
 
 	public void onClick () {
-		Debug.Log ("button Ok clicked");
+		string tmpstr = "";
 
-		manage_text.t.text = "";
+		Debug.Log ("button Ok clicked");
 
 		Stack temp = new Stack ();
 
@@ -25,7 +25,9 @@ public class buttonOk : MonoBehaviour {
 		}
 
 		while (temp.Count > 0) {
-			manage_text.t.text += temp.Pop ();
+			tmpstr += temp.Pop ();
 		}
+
+		BtConnector.sendString (tmpstr);
 	}
 }

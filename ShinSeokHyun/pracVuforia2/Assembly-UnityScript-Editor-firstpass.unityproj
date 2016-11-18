@@ -46,19 +46,24 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Plugins\Editor\Unzip.js" />
-     <None Include="Assets\StreamingAssets\QCAR\test001.xml" />
+     <None Include="Assets\Android Microcontroller Bluetooth\Android Microcontroller Bluetooth\Arduino Basic Test\PlugINTestArduino\Read me.txt" />
      <None Include="Assets\Vuforia\Shaders\ColoredLines.shader" />
      <None Include="Assets\link.xml" />
      <None Include="Assets\Vuforia\Shaders\VertexLitWithZ.shader" />
      <None Include="Assets\Vuforia\Shaders\RenderVideoBackground.shader" />
-     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+     <None Include="Assets\Android Microcontroller Bluetooth\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\Vuforia\Shaders\VideoBackground.shader" />
      <None Include="Assets\Vuforia\Editor\WebcamProfiles\profiles.xml" />
      <None Include="Assets\Vuforia\Shaders\DepthMask.shader" />
-     <None Include="Assets\readme_SDK.txt" />
+     <None Include="Assets\Android Microcontroller Bluetooth\Demos\Bluetooth Terminal (Bytes level)\Read me.txt" />
+     <None Include="Assets\license_3rdpartynotice.txt" />
+     <None Include="Assets\Android Microcontroller Bluetooth\Users of 1.x should read me.txt" />
+     <None Include="Assets\StreamingAssets\QCAR\vumark.xml" />
      <None Include="Assets\Vuforia\Shaders\ClippingMask.shader" />
      <None Include="Assets\Vuforia\Shaders\BrightTexture.shader" />
-     <None Include="Assets\license_3rdpartynotice.txt" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+     <None Include="Assets\readme_SDK.txt" />
+     <None Include="Assets\Android Microcontroller Bluetooth\2.X users should read me.txt" />
      <None Include="Assets\Vuforia\Shaders\Text3D.shader" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
